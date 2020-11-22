@@ -1,0 +1,85 @@
+<!doctype html5>
+<html>
+
+<head>
+    <title>Validação de Email</title>
+    <meta http-equiv="Content-Type" content="text/html">
+</head>
+
+<body>
+    <form id="form" name="form" onsubmit="validateForm(event)">
+        <h3> Validação de Email</h3>
+        <div class="flexbox">
+            <label for="email">Email:</label>
+            <input id="email" type="email" name="email" onblur="validateEmail(email.value)" maxlength="60" size='65'>
+            <input type="submit" value="Submit" />
+            <span id="msgemail" style="display: none;"></span>
+        </div>
+    </form>
+</body>
+
+<script>
+    const form = document.getElementById("form");
+
+    function validateForm(event) {
+
+        event.preventDefault();
+
+        if (validateEmail()) {
+            alert("Formulário enviado com sucesso!")
+        } else {
+            alert("Formulário não enviado, campo Email está inválido.")
+        }
+    };
+
+    function validateEmail() {
+
+        const formEmail = document.getElementById("email").value;;
+
+        if (checkPattern(formEmail) && checkDomain(formEmail)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function checkPattern(formEmail) {
+
+        const re = /^[a-z0-9.]+@[a-z0-9]+\.([a-z]+)$/i;
+
+        if (re.test(formEmail)) {
+            validEmail();
+            return true;
+        } else {
+            invalidEmail();
+            return false;
+        }
+    }
+
+    function checkDomain(formEmail) {
+
+        const domains = ["gmail.com", "outlook.com", "hotmail.com"];
+        const emailSplit = formEmail.split('@', 2)[1];
+
+        if (domains.indexOf(emailSplit) >= 0) {
+            validEmail();
+            return true;
+        } else {
+            invalidEmail();
+            return false;
+        }
+    }
+
+    function validEmail() {
+        document.getElementById("email").setAttribute("style", "border: 1px solid green");
+        document.getElementById("msgemail").setAttribute("style", "display:block;color:green;");
+        document.getElementById("msgemail").innerHTML = "Email válido";
+    }
+
+    function invalidEmail() {
+        document.getElementById("email").setAttribute("style", "border: 1px solid red");
+        document.getElementById("msgemail").setAttribute("style", "display:block;color:red;");
+        document.getElementById("msgemail").innerHTML = "Email inválido";
+    }
+</script>
+</html>
